@@ -13,16 +13,64 @@
 <body>
     <div id="content">
         <h1>Data Creator</h1>
+        <div>
+            <label for="student">Data Name:</label>
+            <input type="text" id="student" name="dataName" placeholder="type your name">
+            <span id="instructions"></span>
+            <button id="advanceBtn" onclick="start()">start</button>
+        </div>
         <br>
-        <div id="sketchPadContainer">
+        <div id="sketchPadContainer" style="visibility: hidden;">
 
         </div>
     </div>
     <script src="js/draw.js"></script>
     <script src="js/sketchPad.js"></script>
-</body>
 <script>
+    let index = 0;
+    const labels = ["circle", "triangle", "rectangle", "line", "tree"];
+
+    const data = {
+        student : null,
+        session: new Date().getTime(),
+        drawings: {}
+    };
+
     const sketchPad = new SketchPad(sketchPadContainer);
+
+    function start() {
+        if (student.value === "") {
+            alert("Please enter your name");
+            return;
+        }
+        data.student = student.value;
+        student.disabled = true;
+        sketchPadContainer.style.visibility = "visible";
+        const label = labels[index];
+        instructions.innerHTML = `Please draw a ${label}`;
+        advanceBtn.innerHTML = "next";
+        advanceBtn.onclick = next;
+
+    }
+
+    function next() {
+        if (sketchPad.paths.length === 0) {
+            alert("Please draw something");
+            return;
+        }
+        const label = labels[index];
+        data.drawings[label] = sketchPad.paths;
+        sketchPad.reset();
+        index++;
+        if(index < labels.length) {
+            instructions.innerHTML = `Please draw a ${labels[index]}`;
+        } else {
+           sketchPadContainer.style.visibility = "hidden";
+            instructions.innerHTML = "Thank you for your drawings";
+            advanceBtn.innerHTML = "save";
+            advanceBtn.onclick = save;
+        }
+    }
 
 </script>
 
