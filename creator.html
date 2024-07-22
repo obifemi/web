@@ -24,11 +24,11 @@
 
         </div>
     </div>
-    <script src="js/draw.js"></script>
+    <script src="../common/draw.js"></script>
     <script src="js/sketchPad.js"></script>
 <script>
     let index = 0;
-    const labels = ["circle", "triangle", "rectangle", "line", "tree"];
+    const labels = ["car", "fish", "house", "tree", "bicycle", "guitar", "pencil", "clock"];
 
     const data = {
         student : null,
@@ -75,8 +75,16 @@
     function save() {
         advanceBtn.disabled = true;
         instructions.innerHTML = "Take your downloaded file and place it alongside the others in the dataset.";
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(data)));
+        
+        const fileName = `${data.session}.json`;
+        element.setAttribute('download', fileName);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
     }
-
 </script>
 
 </html>
